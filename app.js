@@ -10,7 +10,7 @@ var uploadRouter = require('./routes/upload');
 
 var app = express();
 
-var server = app.listen(5252, function(){
+var server = app.listen(3252, function(){
   console.log('Ready on port %d',server.address().port);
 });
 
