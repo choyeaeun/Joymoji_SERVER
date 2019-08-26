@@ -1,15 +1,15 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var qrcodeRouter = require('./routes/qrcode');
-var uploadRouter = require('./routes/upload');
-var downloadRouter = require('./routes/download');
+const indexRouter = require('./routes/index');
+const qrcodeRouter = require('./routes/qrcode');
+const uploadRouter = require('./routes/upload');
+const downloadRouter = require('./routes/download');
 
-var app = express();
+const app = express();
 
 /*var server = app.listen(3252, function(){
   console.log('Ready on port %d',server.address().port);
