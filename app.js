@@ -10,6 +10,10 @@ var uploadRouter = require('./routes/upload');
 
 var app = express();
 
+var server = app.listen(5252, function(){
+  console.log('Ready on port %d',server.address().port);
+});
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
