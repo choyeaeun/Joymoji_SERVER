@@ -102,7 +102,7 @@ app.get('/', function(req, res){
           <main>
               <div class="innertube">
                   <h1 align=center>data position</h1>
-         <img src="./img.jpg" width="225" height="151" alt="teddy">
+         <img src="https://s3.ap-northeast-2.amazonaws.com/joymoji.com/1566817378760.png">
               </div>
           </main>
           <nav id="nav">
