@@ -8,7 +8,7 @@ const indexRouter = require('./routes/index');
 const qrcodeRouter = require('./routes/qrcode');
 const uploadRouter = require('./routes/upload');
 const downloadRouter = require('./routes/download');
-const home = require('./routes/template');
+//const templateRouter = require('./routes/template');
 
 const app = express();
 
@@ -30,7 +30,7 @@ app.use('/', indexRouter);
 app.use('/qrcode', qrcodeRouter);
 app.use('/upload', uploadRouter);
 app.use('/download', downloadRouter);
-app.use('/home', home);
+//app.use('/template', templateRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
