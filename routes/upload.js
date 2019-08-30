@@ -130,15 +130,5 @@ router.post('/single', upload.single('img'), (req, res) => {
   </html>
   `);
 });
-/*
-router.get('/url', function(req, res){
-    var result='';
-    if(err){
-        result = 'Fail';
-    }else{
-        result = `<img src="${imageURL}">`;
-    }
-    res.send(`<html><body>${result}</body></html>`);
-});
-*/
+
 module.exports = router;
