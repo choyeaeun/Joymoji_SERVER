@@ -7,24 +7,24 @@ const config = DBconfig.database;
 const pool = mysql.createPool(config);
 
 router.get('/', function(req, res, next) {
-
-  let originalname = req.query.originalname;  
-  if(!originalname){
-    res.status(400).send({
-      message : "Null Value : originalname"
-    });
-  } else {
-    let webQuery = 'SELECT location FROM media WHERE originalname = ?';
-    //let webResult = await db.queryParam_Arr(webQuery, [originalname]);
     
-    pool.getConnection((err, connection) => {
-      connection.query(webQuery, [originalname], (err, result) => {
-        if(err){
-          console.log(err);
-        }else{
-          //console.log(result[0].location);
-          let imgURL = result[0].location;
-          res.send(`
+    let originalname = req.query.originalname;
+    if(!originalname){
+        res.status(400).send({
+            message : "Null Value : originalname"
+        });
+    } else {
+        let webQuery = 'SELECT location FROM media WHERE originalname = ?';
+    
+        pool.getConnection((err, connection) => {
+            connection.query(webQuery, [originalname], (err, result) => {
+                if(err){
+                    console.log(err);
+                }else{
+                    //rawData안에 location 접근
+                    let imgURL = result[0].location;
+                    //html response
+                    res.send(`
     <!DOCTYPE html>
     <html lang= "en">
       <head>
@@ -79,15 +79,6 @@ router.get('/', function(req, res, next) {
               height: 50px;
               background: #A465FD;
           }
-          #nav {
-              position: absolute;
-              top: 100px;
-              bottom: 50px;
-              left: 0;
-              width: 230px;
-              overflow: auto; 
-              background: #DB8ED1;
-          }
           .innertube {
               margin: 15px;
           }
@@ -127,17 +118,6 @@ router.get('/', function(req, res, next) {
          <img src="${imgURL}">
               </div>
           </main>
-          <nav id="nav">
-              <div class="innertube">
-                  <h1>Data-Type</h1>
-                  <ul>
-                      <li><a href="#">image</a></li>
-                      <li><a href="#">mp4</a></li>
-                      <li><a href="#">GIF</a></li>
-                      <li><a href="#">total 4</a></li>
-                  </ul>
-              </div>
-          </nav>
           <footer id="footer">
        <div class="innertube">
                   <p align=center>jomoji-emoji-homepage</p>
@@ -150,7 +130,6 @@ router.get('/', function(req, res, next) {
         }
       });
     });
-    //console.log(webResult);
 }
 
 });

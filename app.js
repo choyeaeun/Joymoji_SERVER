@@ -8,10 +8,6 @@ const indexRouter = require('./routes/index');
 
 const app = express();
 
-/*var server = app.listen(3252, function(){
-  console.log('Ready on port %d',server.address().port);
-});*/
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
