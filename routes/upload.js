@@ -6,7 +6,7 @@ const DBconfig = require('../config/DBconfig');
 const config = DBconfig.database;
 
 const pool = mysql.createPool(config);
-router.post('/single', upload.single('img'), (req, res) => {
+router.post('/', upload.single('img'), (req, res) => {
     let originalname = req.file.originalname;
     let key = req.file.key;
     let location = req.file.location;
