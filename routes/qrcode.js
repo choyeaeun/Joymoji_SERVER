@@ -5,52 +5,28 @@ const mysql = require('mysql');
 const DBconfig = require('../config/DBconfig');
 const config = DBconfig.database;
 const pool = mysql.createPool(config);
-/*
-const qr = require('qr-image');
-const fs = require('fs');
 
-router.post('/', (req, res, next)=>{
+router.get('/', function(req, res, next) {
 
-  console.log(req.body);
-  let qr_txt = req.body.qr_txt;
-  var qr_png = qr.imageSync(qr_txt, {type: 'png'})
-  let qr_code_file_name = new Date().getTime() + '.png';
-  fs.writeFileSync('/../public/images/'+qr_code_file_name, qr_png, (err)=> {
-    if(err){
-      console.log(err);
-    }
-  })
-  res.send({
-    'qr_img' : "qr" + qr_code_file_name
-  });
-});
-*/
-router.get('/:originalname', async(req, res) => {
-  let originalname = req.param.originalname;
-  console.log(req);
+  let originalname = req.query.originalname;  
   if(!originalname){
     res.status(400).send({
       message : "Null Value : originalname"
     });
   } else {
     let webQuery = 'SELECT location FROM media WHERE originalname = ?';
-    console.log(res);
-
+    //let webResult = await db.queryParam_Arr(webQuery, [originalname]);
+    
     pool.getConnection((err, connection) => {
       connection.query(webQuery, [originalname], (err, result) => {
         if(err){
           console.log(err);
         }else{
-          console.log(result);
-          //let resultLocation = result.;
-          connection.release();
-        }
-      });
-    });
-  }
-  res.send(`
-  <!DOCTYPE html>
-  <html lang= "en">
+          //console.log(result[0].location);
+          let imgURL = result[0].location;
+          res.send(`
+    <!DOCTYPE html>
+    <html lang= "en">
       <head>
           <title>JOYMOJI</title>
           <style type="text/css">
@@ -74,8 +50,8 @@ router.get('/:originalname', async(req, res) => {
           main {
        margin:0 auto;
               position: fixed;
-              top: 100px; /* Set this to the height of the header */
-              bottom: 50px; /* Set this to the height of the footer */
+              top: 100px; 
+              bottom: 50px; 
               left: 230px;
               right: 0;
        text-align: center;
@@ -109,7 +85,7 @@ router.get('/:originalname', async(req, res) => {
               bottom: 50px;
               left: 0;
               width: 230px;
-              overflow: auto; /* Scrollbars will appear on this frame only when there's enough content to require scrolling. To disable scrollbars, change to "hidden", or use "scroll" to enable permanent scrollbars */
+              overflow: auto; 
               background: #DB8ED1;
           }
           .innertube {
@@ -131,7 +107,7 @@ router.get('/:originalname', async(req, res) => {
           }
      /IE6 fix/
            * html body{
-               padding: 50px 0 50px 230px; /* Set the first value to the height of the header, the third value to the height of the footer, and last value to the width of the nav */
+               padding: 50px 0 50px 230px; 
            }
            * html main{
                height: 100%;
@@ -148,7 +124,7 @@ router.get('/:originalname', async(req, res) => {
           <main>
               <div class="innertube">
                   <h1 align=center>data position</h1>
-         <img src="https://s3.ap-northeast-2.amazonaws.com/joymoji.com/1567167753859.gif">
+         <img src="${imgURL}">
               </div>
           </main>
           <nav id="nav">
@@ -170,6 +146,13 @@ router.get('/:originalname', async(req, res) => {
       </body>
   </html>
   `);
+          connection.release();
+        }
+      });
+    });
+    //console.log(webResult);
+}
+
 });
 
 
