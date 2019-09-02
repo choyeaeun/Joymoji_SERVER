@@ -1,9 +1,15 @@
 var express = require('express');
 var router = express.Router();
+
 const upload = require('../config/multer');
+
 const mysql = require('mysql');
 const DBconfig = require('../config/DBconfig');
 const config = DBconfig.database;
+
+const qr = require('qr-image');
+const fs = require('fs');
+const qrcode = require('qrcode');
 
 const pool = mysql.createPool(config);
 router.post('/', upload.single('img'), (req, res) => {
@@ -23,34 +29,33 @@ router.post('/', upload.single('img'), (req, res) => {
                 if (err){
                     console.log(err);
                 }else {
-                    console.log(result);
+                    //console.log(result);
                     connection.release();
                 }
             });
         });
     }
     console.log(originalname);
-    res.json({key: req.file.key, imgURL : req.file.location, originalname : req.file.originalname });
 
-});
-/*
-const qr = require('qr-image');
-const fs = require('fs');
+    let qr_txt = `http://15.164.204.212:5252/qrcode/?originalname=${originalname}`;
+    var code = qr.image(qr_txt, { type : 'png'})
+    res.setHeader('Content-type', 'image/png');
+    code.pipe(res);
+    /*
+    var qr_png = qr.imageSync(qr_txt, {type : 'png'});
+    let qr_code_file_name = new Date().getTime() + '.png';
+    fs.writeFileSync('../public/images/' + qr_code_file_name, qr_png, (err) => {
+        if(err){
+            console.log(err);
+        }
+    });
+    res.send({'qr_img' : "qr" + qr_code_file_name});
+    //res.json({key: req.file.key, imgURL : req.file.location, originalname : req.file.originalname });
 
-router.post('/', (req, res, next)=>{
-
-  console.log(req.body);
-  let qr_txt = req.body.qr_txt;
-  var qr_png = qr.imageSync(qr_txt, {type: 'png'})
-  let qr_code_file_name = new Date().getTime() + '.png';
-  fs.writeFileSync('/../public/images/'+qr_code_file_name, qr_png, (err)=> {
-    if(err){
-      console.log(err);
-    }
-  })
-  res.send({
-    'qr_img' : "qr" + qr_code_file_name
-  });
-});
+    qrcode.toDataURL(`http://15.164.204.212:5252/qrcode/?originalname=${originalname}`, function(err, url){
+        fs.writeFileSync(__dirname + '/../public/images/'+ new Date().getTime() + '.png', `<img src="${url}">`);
+    });
+    res.send({'qr_img' : "qr" + __dirname + '/../public/images/'+ new Date().getTime() + '.png'});
 */
+});
 module.exports = router;
