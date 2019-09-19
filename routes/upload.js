@@ -14,16 +14,16 @@ router.post('/', upload.single('img'), (req, res) => {
     let originalname = req.file.originalname;
     let key = req.file.key;
     let location = req.file.location;
+    let mimetype = req.file.mimetype;
     //save to DB
     if(originalname == null){
         res.status(400).send({
             message : "Null value"
         });
     }else {
-        let uploadQuery = 'INSERT INTO media VALUES (?,?,?)';
-        
+        let uploadQuery = 'INSERT INTO media VALUES (?,?,?,?)';
         pool.getConnection((err, connection)=> {
-            connection.query(uploadQuery, [originalname, key, location], (err, result) => {
+            connection.query(uploadQuery, [originalname, key, location, mimetype], (err, result) => {
                 if (err){
                     console.log(err);
                 }else {

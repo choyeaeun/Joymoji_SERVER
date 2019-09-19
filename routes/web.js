@@ -14,7 +14,7 @@ router.get('/', function(req, res, next) {
             message : "Null Value : originalname"
         });
     } else {
-        let webQuery = 'SELECT location FROM media WHERE originalname = ?';
+        let webQuery = 'SELECT location, mimetype FROM media WHERE originalname = ?';
     
         pool.getConnection((err, connection) => {
             connection.query(webQuery, [originalname], (err, result) => {
@@ -23,8 +23,9 @@ router.get('/', function(req, res, next) {
                 }else{
                     //rawData안에 location 접근
                     let imgURL = result[0].location;
+                    let mimetype = result[0].mimetype;
                     //html response including imgURL
-                    res.send(templateHTML(imgURL));
+                    res.send(templateHTML(imgURL,mimetype));
           connection.release();
         }
       });
@@ -33,7 +34,7 @@ router.get('/', function(req, res, next) {
 
 });
 
-function templateHTML(imgURL){
+function templateHTML(imgURL,mimetype){
     return `<!DOCTYPE html>
     <html lang= "en">
         <head>
@@ -43,13 +44,14 @@ function templateHTML(imgURL){
                 margin: 0;
                 padding: 0;
                 position: fixed;
-                overflow: hidden;
+                overflow: auto;
                 width:100%;
                 height: 100%;
                 max-height: 100%;
                 font-family: century gothic;
                 line-height: 1.5em;
             }
+
        #wrap {
              width: 800px;
              height: 100%;
@@ -58,6 +60,7 @@ function templateHTML(imgURL){
              margin:0 auto;
              padding: 5px 10px;
             }
+
             main {
          margin:0 auto;
                 position: fixed;
@@ -65,9 +68,10 @@ function templateHTML(imgURL){
                 bottom: 50px; /* Set this to the height of the footer */
                 left: 0;
                 right: 0;
-         text-align: center;
-            padding-top:10%;
+                text-align: center;
+                padding-top:10%;
                 overflow: auto;
+               
                 background: #EAEAEA;
             }
             h1,h2,h3,h4,h5,h6 {font-family: "century gothic"  }
@@ -87,7 +91,7 @@ function templateHTML(imgURL){
                 background: #6c5ce7;
             }
             #footer {
-                position: absolute;
+                position: fixed;
                 left: 0;
                 bottom: 0;
                 width: 100%;
@@ -133,32 +137,55 @@ function templateHTML(imgURL){
                 </div>
             </header>
             <main>
-            <div class="innertube" vertical-align="middle">
+            <div class="innertube" id="container" vertical-align="middle">
                     <h2 align=center style="color:#353535; ">Your Joymoji!!</h1>
-                    <img  src="${imgURL}" style="max-width: 70%; height: auto;" alt="teddy">
+
+                    <script>
+                    var container = document.getElementById('container');
+                    var type = "${mimetype}";
+                    console.log(type);
+                    if(type == "video/mp4"){
+                        container.innerHTML = '<video style="max-width: 80%; height: auto;" controls="controls" autoplay ="autoplay "><source src="${imgURL}" type="video/mp4" /></video>';
+                    }else {
+                        container.innerHTML = '<img src="${imgURL}" style="max-width: 80%; height: auto;">';
+                    }
+                    </script>
             </div>
             <br><br>
-                <button class="share-btn">share</button>
+                <button class="share-btn">STHARE</button>
                 <script>
                 const shareBtn = document.querySelector('.share-btn');
+                const ogBtnContent = shareBtn.textContent;
+                const title = document.querySelector('h1').textContent;
+                const url = document.querySelector('link[rel=canonical]') &&
+                            document.querySelector('link[rel=canonical]').href ||
+                            window.location.href;
+                                        
+                
                 shareBtn.addEventListener('click', () => {
-                        
-                        if(navigator.share !== undefined){
-                            console.log('clicked!');
-                            navigator.share({
-                                title: "This is my Joymoji!",
-                                text: "hey!!",
-                                url: "${imgURL}"
-                            })
-                            .then(() => console.log("Successful share"))
-                            .catch((error) => console.log("Error sharing", error));
-                        }else{
-                            console.log("navigator.share == undefined")
-                        }
-                    });
-                </script>
-               
-            </main>
+                      if (navigator.share) {
+                              navigator.share({
+                                        title,
+                                              url
+    }).then(() => {
+      showMessage(shareBtn, 'Thanks! 😄');
+    })
+    .catch(err => {
+      showMessage(shareBtn, 'Couldnt share 🙁');
+    });
+  } else {
+    showMessage(shareBtn, 'Not supported 🙅‍');
+  }
+});
+
+function showMessage(element, msg) {
+  element.textContent = msg;
+  setTimeout(() => {
+    element.textContent = ogBtnContent;
+  }, 2000);
+}</script>
+   
+</main>
             <footer id="footer">
          <div class="innertube">
                     <form style="margin:auto; width:60%" action="" target="">
@@ -173,6 +200,8 @@ function templateHTML(imgURL){
                     <p  align=center >Joymoji-Emoji-Homepage</p>
                 </div>
             </footer>
+            
+        
         </body>
     </html>
     `
