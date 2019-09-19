@@ -138,7 +138,7 @@ function templateHTML(imgURL){
                     <img  src="${imgURL}" style="max-width: 70%; height: auto;" alt="teddy">
             </div>
             <br><br>
-                <!--<button class="share-btn">share</button>
+                <button class="share-btn">share</button>
                 <script>
                 const shareBtn = document.querySelector('.share-btn');
                 shareBtn.addEventListener('click', () => {
@@ -157,7 +157,7 @@ function templateHTML(imgURL){
                         }
                     });
                 </script>
-               -->
+               
             </main>
             <footer id="footer">
          <div class="innertube">

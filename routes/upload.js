@@ -36,7 +36,7 @@ router.post('/', upload.single('img'), (req, res) => {
     console.log(originalname);
     
     //create QRcode from URL
-    let qr_txt = `http://15.164.204.212:5252/web/?originalname=${originalname}`;
+    let qr_txt = `https://joymoji.ml/web/?originalname=${originalname}`;
     var code = qr.image(qr_txt, { type : 'png'})
     res.setHeader('Content-type', 'image/png');
     code.pipe(res);
