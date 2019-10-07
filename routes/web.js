@@ -128,6 +128,12 @@ function templateHTML(imgURL,mimetype){
                  margin-top: 10%;
                  cursor: pointer;
                  }
+
+                 .unstyled-button {
+                    border: none;
+                    padding: 0;
+                    background: none;
+                  }
             </style>
         </head>
         <body>
@@ -154,11 +160,8 @@ function templateHTML(imgURL,mimetype){
             <br>
             <div class="sharethis-inline-share-buttons"></div>
             <br>
-            <button>
-            <img src=" https://s3.ap-northeast-2.amazonaws.com/joymoji.com/1570437124724.png" alt="">
-            Submit
-          </button>
-               
+                <button class="share-btn unstyled-button"><img src="https://s3.ap-northeast-2.amazonaws.com/joymoji.com/1570437124724.png" width="80" height="80" alt=""></button>
+                
                 <script>
                 const shareBtn = document.querySelector('.share-btn');
                 const ogBtnContent = shareBtn.textContent;
@@ -174,22 +177,22 @@ function templateHTML(imgURL,mimetype){
                                         title,
                                               url
     }).then(() => {
-      showMessage(shareBtn, 'Thanks! 😄');
+      //showMessage(shareBtn, 'Thanks! 😄');
     })
     .catch(err => {
-      showMessage(shareBtn, 'Couldnt share 🙁');
+      //showMessage(shareBtn, 'Couldnt share 🙁');
     });
   } else {
-    showMessage(shareBtn, 'Not supported 🙅‍');
+    //showMessage(shareBtn, 'Not supported 🙅‍');
   }
 });
-
+/*
 function showMessage(element, msg) {
   element.textContent = msg;
   setTimeout(() => {
     element.textContent = ogBtnContent;
   }, 2000);
-}</script>
+}*/</script>
    
 </main>
             <footer id="footer">
