@@ -51,7 +51,7 @@ function templateHTML(imgURL,mimetype){
                 font-family: century gothic;
                 line-height: 1.5em;
             }
-
+            <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5d835a0d2e4d8b00124457eb&product=inline-share-buttons" async="async"></script>
        #wrap {
              width: 800px;
              height: 100%;
@@ -151,8 +151,14 @@ function templateHTML(imgURL,mimetype){
                     }
                     </script>
             </div>
-            <br><br>
-                <button class="share-btn">STHARE</button>
+            <br>
+            <div class="sharethis-inline-share-buttons"></div>
+            <br>
+            <button>
+            <img src=" https://s3.ap-northeast-2.amazonaws.com/joymoji.com/1570437124724.png" alt="">
+            Submit
+          </button>
+               
                 <script>
                 const shareBtn = document.querySelector('.share-btn');
                 const ogBtnContent = shareBtn.textContent;
